@@ -194,17 +194,64 @@ Try:
 `;
   };
 
-  const sendChat = () => {
-    const msg = chatInput.trim();
-    if (!msg) return;
+  const sendChat = async () => {
+  const msg = chatInput.trim();
+  if (!msg) return;
 
-    setChatInput("");
+  setChatInput("");
 
-    const userMessage: ChatMessage = { role: "user", text: msg };
-    const botMessage: ChatMessage = { role: "assistant", text: getBotReply(msg) };
+  const userMessage: ChatMessage = { role: "user", text: msg };
 
-    setChatMessages((prev) => [...prev, userMessage, botMessage]);
-  };
+  // 1) rule-based reply first
+  const ruleReply = getBotReply(msg);
+
+  // If ruleReply is fallback message → call LLM
+  const isFallback =
+    ruleReply.includes("I can help only with comparisons") ||
+    ruleReply.includes("Try asking:");
+
+  setChatMessages((prev) => [...prev, userMessage]);
+
+  if (!isFallback) {
+    setChatMessages((prev) => [...prev, { role: "assistant", text: ruleReply }]);
+    return;
+  }
+
+  // 2) LLM reply
+  setChatMessages((prev) => [
+    ...prev,
+    { role: "assistant", text: "Thinking..." },
+  ]);
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: msg }),
+    });
+
+    const data = await res.json();
+
+    setChatMessages((prev) => {
+      // remove last "Thinking..."
+      const updated = [...prev];
+      updated.pop();
+      return [...updated, { role: "assistant", text: data.reply || "No reply" }];
+    });
+  } catch (e) {
+    setChatMessages((prev) => {
+      const updated = [...prev];
+      updated.pop();
+      return [
+        ...updated,
+        {
+          role: "assistant",
+          text: "⚠️ LLM failed. Try again later.",
+        },
+      ];
+    });
+  }
+};
 
   // ---------------- Main Analysis ----------------
   const handleAnalyze = async () => {
