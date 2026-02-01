@@ -7,31 +7,28 @@ The goal is to build an intelligent system that can observe data, analyze trends
 
 ---
 
-##  Architecture Overview
 User (Dashboard / Chatbot)
-↓
+        ↓
 Frontend (Next.js + Tailwind)
-↓
+        ↓
 API Layer (Next.js API Routes)
-↓
+        ↓
 Data Sources
 • OpenStreetMap (Places)
 • Geocoding API
 • Logistics & Road Data
-↓
+        ↓
 Analysis Engine
 • Gap Score Calculator
 • Trend Analyzer
 • Rule-based Decision Logic
-↓
+        ↓
 Decision Output
 • Opportunity Ranking
 • Recommendations
 • Confidence Scores
 • Chatbot Explanations
 
-
----
 
 ##  Tech Stack
 **Frontend**
