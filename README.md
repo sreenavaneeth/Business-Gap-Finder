@@ -147,4 +147,40 @@ Run npm run dev
 
 No paid APIs or environment variables required
 
+Prompt Template Used and Prompts Used
 
+Prompt Template Used
+The system follows a single generic prompt template designed to simulate an AI-powered business decision assistant.
+
+The template assumes the role of an assistant that receives location details, business density information, accessibility indicators, and user intent. The assistant analyzes demand versus supply, identifies underserved business categories, compares locations or business types when requested, and provides recommendations with reasoning and a confidence score between 0 and 100.
+
+The responses are designed to be concise, explainable, decision-focused, and suitable for human review and approval.
+
+⸻
+
+Prompts Used During Development
+
+Business Opportunity Identification
+What business opportunities are missing in this area?
+Suggest top underserved business categories for this location.
+
+Location Comparison
+Compare location A versus location B for business potential.
+Which location is better to start a new business and why?
+
+Business Type Comparison
+Compare gym versus cafe in this area.
+Which business has higher demand and lower competition here?
+
+Decision Explanation
+Why is this business recommended for this location?
+Explain the reasoning behind the confidence score.
+
+Risk and Feasibility Analysis
+Is this business feasible based on existing competition?
+What risks should be considered before starting this business here?
+
+⸻
+
+Additional Notes
+The prompts were implemented using rule-based decision logic to simulate AI reasoning due to hackathon time constraints. The system architecture is prompt-ready and can be directly integrated with large language models such as GPT, Gemini, or Claude without structural changes. The prompt design ensures explainability, transparency, and human-in-the-loop governance.
